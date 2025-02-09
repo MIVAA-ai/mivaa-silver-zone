@@ -1,0 +1,20 @@
+uploads/*
+!uploads/
+!uploads/.gitkeep
+
+# Ignore all files in the folder
+output/*
+!output/
+!output/.gitkeep
+
+logs/*
+!logs/
+!logs/.gitkeep
+
+db_files/*
+!db_files/
+!db_files/.gitkeep
+
+
+.idea
+__pycache__/

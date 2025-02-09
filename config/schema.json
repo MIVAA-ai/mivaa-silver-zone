@@ -1,0 +1,46 @@
+[
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS sql_script_store (zone TEXT CHECK(zone IN ('COMMON', 'BRONZE', 'SILVER', 'GOLD')) NOT NULL, query TEXT NOT NULL, query_type TEXT CHECK(query_type IN ('SELECT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'INSERT', 'OTHER')) NOT NULL, table_name TEXT NOT NULL, data_columns TEXT, PRIMARY KEY (table_name, query_type));",
+        "query_type": "CREATE",
+        "table_name": "sql_script_store"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY, filename TEXT NOT NULL, filepath TEXT NOT NULL, datatype TEXT CHECK(datatype IN ('FIELD', 'WELL_BORE', 'BORE_HOLE')) NOT NULL, checksum TEXT NOT NULL, remarks TEXT, file_status TEXT CHECK(file_status IN ('PICKED', 'BRONZE_PROCESSING', 'SILVER_PROCESSING', 'BRONZE_PROCESSED', 'SILVER_PROCESSED', 'ERROR')) NOT NULL)",
+        "query_type": "CREATE",
+        "table_name": "files"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS error_messages (error_code TEXT PRIMARY KEY,error_message TEXT NOT NULL,error_severity TEXT CHECK(error_severity IN ('WARNING', 'ERROR')) NOT NULL);",
+        "query_type": "CREATE",
+        "table_name": "error_messages"
+    },
+    {
+        "zone": "COMMON",
+        "query": "INSERT INTO error_messages (error_code, error_message, error_severity) VALUES ('future_discovery_date', 'DiscoveryDate is in the future', 'WARNING'),('Inconsistent_field_data', 'Inconsistent FieldType or DiscoveryDate', 'ERROR'),('polygon_incomplete', 'Incomplete Polygon Data', 'ERROR'),('polygon_not_closed', 'Polygon not closed', 'ERROR'), ('not_nullable', 'Field name cannot be null or empty', 'ERROR'), ('parent_field_not_found', 'Error while fetching reference data for the parent field name.', 'WARNING'),('crs_not_found', 'Error while fetching CRS.', 'ERROR'),('crs_conversion_error', 'Error while converting coordinates to WGS84 CRS.', 'ERROR');",
+        "query_type": "INSERT",
+        "table_name": "error_messages"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS validation_errors (error_id INTEGER PRIMARY KEY, file_id INTEGER, row_index INTEGER, zone TEXT CHECK(zone IN ('COMMON', 'BRONZE', 'SILVER', 'GOLD')) NOT NULL, field_name TEXT, error_type TEXT, error_code TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "table_name": "validation_errors"
+    },
+    {
+        "zone": "BRONZE",
+        "query": "CREATE TABLE IF NOT EXISTS field_bronze_data (id INTEGER PRIMARY KEY, row_index INTEGER NOT NULL, file_id INTEGER NOT NULL, FieldName TEXT NOT NULL, FieldType TEXT, DiscoveryDate TIMESTAMP, X REAL, Y REAL, CRS TEXT, Source TEXT, ParentFieldName TEXT, validation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "data_columns": "FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName",
+        "table_name": "field_bronze_data"
+    },
+    {
+        "zone": "SILVER",
+        "query": "CREATE TABLE IF NOT EXISTS field_silver_data (id INTEGER PRIMARY KEY, row_index INTEGER NOT NULL, file_id INTEGER NOT NULL, FieldName TEXT NOT NULL, FieldType TEXT, Source TEXT, DiscoveryDate DATE, ParentFieldName TEXT, ParentFieldOSDUId TEXT, AsIngestedCoordinates JSON, Wgs84Coordinates JSON, CRS TEXT, validation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "data_columns": "FieldName,FieldType,Source,DiscoveryDate,ParentFieldName,ParentFieldOSDUId,AsIngestedCoordinates,Wgs84Coordinates,CRS",
+        "table_name": "field_silver_data"
+    }
+]

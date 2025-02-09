@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mivaa-fieldboundaries-bronze-zone-container
+    volumes:
+      - ${UPLOADS_DIR}:/uploads  # Map the uploads directory from host
+      - ${OUTPUT_DIR}:/output   # Map the output directory from host
+      - ${DB_DIR}:/db_files  # Map the uploads directory from host
+      - ${LOGS_DIR}:/logs  # Map the uploads directory from host
+    ports:
+      - "5000:5000"  # Expose the application port
+    env_file:
+      - .env  # Load environment variables from the .env file
+    environment:
+      - PYTHONUNBUFFERED=1

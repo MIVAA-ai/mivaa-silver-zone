@@ -1,0 +1,10 @@
+{
+    "base_url": "",
+    "headers": {
+      "accept": "application/json",
+      "data-partition-id": "",
+      "Authorization": "Bearer <auth-token>",
+      "Content-Type": "application/json",
+      "Accept": "*/*"
+    }
+  }
