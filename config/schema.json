@@ -19,7 +19,7 @@
     },
     {
         "zone": "COMMON",
-        "query": "INSERT INTO error_messages (error_code, error_message, error_severity) VALUES ('future_discovery_date', 'DiscoveryDate is in the future', 'WARNING'),('Inconsistent_field_data', 'Inconsistent FieldType or DiscoveryDate', 'ERROR'),('polygon_incomplete', 'Incomplete Polygon Data', 'ERROR'),('polygon_not_closed', 'Polygon not closed', 'ERROR'), ('not_nullable', 'Field name cannot be null or empty', 'ERROR'), ('parent_field_not_found', 'Error while fetching reference data for the parent field name.', 'WARNING'),('crs_not_found', 'Error while fetching CRS.', 'ERROR'),('crs_conversion_error', 'Error while converting coordinates to WGS84 CRS.', 'ERROR');",
+        "query": "INSERT INTO error_messages (error_code, error_message, error_severity) VALUES ('future_discovery_date', 'DiscoveryDate is in the future', 'WARNING'),('Inconsistent_field_data', 'Inconsistent FieldType or DiscoveryDate', 'ERROR'),('polygon_incomplete', 'Incomplete Polygon Data', 'ERROR'),('polygon_not_closed', 'Polygon not closed', 'ERROR'), ('not_nullable', 'Field name cannot be null or empty', 'ERROR'), ('parent_field_not_found', 'Error while fetching reference data for the parent field name.', 'WARNING'),('crs_not_found', 'Error while fetching CRS.', 'ERROR'),('crs_conversion_error', 'Error while converting coordinates to WGS84 CRS.', 'ERROR'), ('field_already_exists', 'Field Already Exists.', 'ERROR');",
         "query_type": "INSERT",
         "table_name": "error_messages"
     },

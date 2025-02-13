@@ -56,40 +56,30 @@ class OSDUClient:
             print(f"Error parsing configuration file: {e}")
             raise
 
-    def search(self, MASTER_DATA, query=None, limit=30, offset=0):
+
+
+    def search(self, payload):
         """
         Sends a POST request to the OSDU search API.
 
         Parameters:
-        - MASTER_DATA (str): The key to fetch query configuration from PROJECT_CONFIG.
-        - query (dict, optional): The query payload for the search API.
-        - limit (int, optional): Number of results to return. Default is 30.
-        - offset (int, optional): The offset for pagination. Default is 0.
+        - payload (dict): The complete search query payload.
 
         Returns:
         - dict: Parsed JSON response from the API.
 
         Raises:
-        - Exception: If the API request fails or returns a non-200 status code.
+        - requests.exceptions.RequestException: If the API request fails.
+        - json.JSONDecodeError: If the response cannot be parsed as JSON.
+        - Exception: For any unexpected errors.
         """
         try:
-            # Construct the query URL
+            # Construct the query URL (make it configurable if needed)
             query_url = f"{self.base_url}/api/search/v2/query"
 
-            # Get a copy of the payload to avoid modifying PROJECT_CONFIG
-            payload = PROJECT_CONFIG["SEARCH_QUERIES"].get(MASTER_DATA, {}).copy()
-
-            if not payload:
-                raise ValueError(f"Invalid MASTER_DATA key: {MASTER_DATA}")
-
-            # Update query parameters
-            payload["limit"] = limit
-            payload["offset"] = offset
-
-            if query:
-                payload["query"] = query
-
-            logger.info(f"Sending search request to {query_url} with payload: {payload}")
+            # Log only a partial payload to avoid exposing sensitive data
+            logger.info(
+                f"Sending search request to {query_url} with limited payload preview: {json.dumps(payload)[:200]}...")
 
             # Send the POST request
             response = requests.post(query_url, headers=self.headers, json=payload)
@@ -103,19 +93,19 @@ class OSDUClient:
             return response.json()
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed: {e}")
+            logger.error(f"Request to OSDU API failed: {e}")
             raise
 
-        except ValueError as e:
+        except json.JSONDecodeError as e:
             logger.error(f"Failed to parse JSON response: {e}")
-            logger.error(f"Raw response: {response.text if 'response' in locals() else 'No response received'}")
+            logger.error(f"Raw response: {response.text if response else 'No response received'}")
             raise
 
         except Exception as e:
             logger.error(f"An unexpected error occurred: {e}")
             raise
 
-    def crs_converter(self, from_crs, points):
+    def crs_converter(self, from_crs, to_crs, points):
         """
         Converts CRS coordinates using the API.
 
@@ -136,7 +126,7 @@ class OSDUClient:
             # Prepare the payload
             payload = {
                 "fromCRS": from_crs,
-                "toCRS": PROJECT_CONFIG["WGS84CRS"],
+                "toCRS": to_crs,
                 "points": points
             }
 
