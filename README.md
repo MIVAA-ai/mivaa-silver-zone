@@ -1,6 +1,6 @@
 # MIVAA Silver Zone Tool
 
-This repository contains the **MIVAA Silver Zone Tool**, a critical software utility for transforming and enriching field boundary data that has been validated in the **Bronze Zone**. The tool applies advanced validation rules, coordinate transformations, and OSDU metadata integration, ensuring the data is optimized for further processing in the **Gold Zone**.
+This repository contains the **MIVAA Silver Zone Tool**, a critical software utility for transforming and enriching field boundary data that has been validated in the **[Bronze Zone](https://github.com/MIVAA-ai/mivaa-bronze-zone)**. The tool applies advanced validation rules, coordinate transformations, and OSDU metadata integration, ensuring the data is optimized for further processing in the **Gold Zone**.
 
 The Silver Zone enhances **data quality** by:
 - Filtering and refining Bronze Zone results.
@@ -148,4 +148,3 @@ mivaa-silver-zone/
 - This application is currently tested in the windows environment, incase you face any issues running it in Linux, feel free to reach out.
 
 Feel free to raise any issues or suggestions for improvement! Reach out at [info@deepdatawithmivaa.com](mailto:info@deepdatawithmivaa.com) for more help, comments, or feedback.
-
