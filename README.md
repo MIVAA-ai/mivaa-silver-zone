@@ -51,8 +51,7 @@ The Silver Zone enhances **data quality** by:
    ```
    Replace `/path/to/mivaa-silver-directory` with your desired base directory.
 
-
-   ### 2. Initialize the Database
+### 2. Initialize the Database
 
 Run the following command in your terminal:
 ```bash
