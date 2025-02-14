@@ -1,13 +1,19 @@
-# MIVAA Bronze Zone Tool
+# MIVAA Silver Zone Tool
 
-This repository contains a robust software utility designed to validate and process field boundaries data in CSV format. Built with a focus on ensuring data quality, the utility plays a critical role in preparing high-quality data for ingestion into platforms like OSDU, adhering to the principles of the Medallion Architecture. Currently, this utility implements only bronze zone validations.
+This repository contains the **MIVAA Silver Zone Tool**, a critical software utility for transforming and enriching field boundary data that has been validated in the **Bronze Zone**. The tool applies advanced validation rules, coordinate transformations, and OSDU metadata integration, ensuring the data is optimized for further processing in the **Gold Zone**.
+
+The Silver Zone enhances **data quality** by:
+- Filtering and refining Bronze Zone results.
+- Performing **coordinate transformations** to WGS84 using OSDU's CRS services.
+- Validating and enriching metadata with **OSDU ID resolution**.
+- Logging results and **storing structured outputs** for downstream consumption.
 
 ---
 
 ## Prerequisites
 
 1. **Download the Repository**:
-   - [Clone](https://github.com/MIVAA-ai/mivaa-bronze-zone.git) or download the repository as a [ZIP](https://github.com/MIVAA-ai/mivaa-bronze-zone/archive/refs/heads/main.zip) file.
+   - [Clone](https://github.com/MIVAA-ai/mivaa-silver-zone.git) or download the repository as a [ZIP](https://github.com/MIVAA-ai/mivaa-silver-zone/archive/refs/heads/main.zip) file.
 
 2. **Unzip the Repository**:
    - Extract the downloaded ZIP file to a folder on your system.
@@ -28,9 +34,9 @@ This repository contains a robust software utility designed to validate and proc
 1. Open Command Prompt.
 2. Navigate to the repository directory and run:
    ```cmd
-   startup-windows.bat D:/MIVAA-ai/mivaa-bronze-directory
+   startup-windows.bat D:/MIVAA-ai/mivaa-silver-directory
    ```
-   Replace `D:/MIVAA-ai/mivaa-bronze-directory` with your desired base directory.
+   Replace `D:/MIVAA-ai/mivaa-silver-directory` with your desired base directory.
 
 #### For Linux:
 1. Open a terminal.
@@ -41,11 +47,12 @@ This repository contains a robust software utility designed to validate and proc
    ```
 4. Run the command:
    ```bash
-   ./startup-linux.sh /path/to/mivaa-bronze-directory
+   ./startup-linux.sh /path/to/mivaa-silver-directory
    ```
-   Replace `/path/to/mivaa-bronze-directory` with your desired base directory.
+   Replace `/path/to/mivaa-silver-directory` with your desired base directory.
 
-### 2. Initialize the Database
+
+   ### 2. Initialize the Database
 
 Run the following command in your terminal:
 ```bash
@@ -79,46 +86,36 @@ Errors are logged in the database with severity levels (`WARNING`, `ERROR`). Det
 - **Error Logs**:
   Detailed error logs are saved in the database and corresponding output folders for review.
 
+
 ---
 
 ## Project Structure
 
 ```
-mivaa-fieldboundaries-bronze-zone/
-├── app.py                # Main application entry point
-├── config/               # Configuration files and utilities
-│   ├── settings.py       # Application-level settings and environment variables
-│   └── logger.py         # Logging configuration
-├── crawler/              # File synchronization and polling utilities
-│   ├── file_watcher.py   # Watches for changes in input directories
-│   └── sync_service.py   # Synchronizes files between local and remote locations
-├── models/               # Database models and schema
-│   ├── base_model.py     # Base model definition
-│   └── field_models.py   # Models specific to field boundaries
-├── utils/                # Helper functions and utilities
-│   ├── db_utils.py       # Database connection and query utilities
-│   ├── validation_utils.py # Validation logic for input data
-│   └── file_utils.py     # File handling and path management
-├── validator/            # Core data validation logic
-│   ├── validations.py    # Custom validation functions
-│   ├── polygon_checks.py # Polygon-specific validation logic
-│   └── date_checks.py    # Date-specific validation logic
-├── migrations/           # Database migrations and versioning
-│   ├── 0001_initial.py   # Initial database schema
-│   └── alembic.ini       # Alembic configuration for migrations
-├── tests/                # Unit and integration tests
-│   ├── test_validations.py # Tests for validation logic
-│   ├── test_crawler.py   # Tests for file synchronization
-│   └── test_endpoints.py # API or main app testing
-├── docker/               # Docker-related files
-│   ├── Dockerfile        # Docker image configuration
-│   └── docker-compose.yml # Docker Compose configuration
-├── .env                  # Environment variables
-├── requirements.txt      # Python dependencies
-├── setup.bat             # Windows setup script
-├── setup.sh              # Linux setup script
-└── README.md             # Project documentation
-
+mivaa-silver-zone/
+├── silver_zone_processor.py  # Main processing script
+├── config/                   # Configuration settings
+│   ├── logger_config.py      # Logging configuration
+│   ├── project_config.py     # Project settings and environment variables
+├── models/                   # Database models
+│   ├── field_bronze_data.py  # Fetches data from Bronze Zone
+│   ├── field_silver_data.py  # Stores and fetches Silver Zone results
+│   ├── validation_errors.py  # Logs validation errors
+├── osdu/                     # OSDU integration
+│   ├── osdu_client.py        # OSDU API client for metadata resolution
+├── utils/                     # Utility functions
+│   ├── db_utils.py           # Database handling
+│   ├── validation_utils.py   # Validation logic
+├── migrations/                # Database migrations
+├── tests/                     # Unit and integration tests
+│   ├── test_validations.py   # Validation unit tests
+│   ├── test_crs_conversion.py # CRS transformation tests
+├── docker/                    # Docker configuration
+│   ├── Dockerfile             # Docker image setup
+│   ├── docker-compose.yml     # Docker Compose settings
+├── .env                        # Environment variables
+├── requirements.txt            # Python dependencies
+└── README.md                   # Project documentation
 ```
 
 ---
