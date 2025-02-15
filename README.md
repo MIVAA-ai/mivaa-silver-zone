@@ -138,7 +138,8 @@ mivaa-silver-zone/
 
 ## Additional Resources
 - **Blog**: Read the detailed blog post about this application: 
-- **Medallion Architecture**: Learn more about the principles of Medallion Architecture [here](https://example.com).
+- **Medallion Architecture**: Learn more about the principles of Medallion Architecture [here](https://deepdatawithmivaa.com/2024/12/03/unlocking-subsurface-insights-how-medallion-architecture-elevates-data-management-in-oil-and-gas/).
+- **Bronze Zone**: Solution to validate data in bronze zone [here](https://deepdatawithmivaa.com/2025/01/15/bronze-zone-vol-1-medallion-architecture-for-osdu-data-ingestion-use-case/).
 
 ---
 
