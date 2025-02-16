@@ -1,0 +1,11 @@
+FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName
+Kamala,OilField,2024-02-27,1586223.32907037,5961867.06588966,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1097212.3936809,5928627.57708922,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1305724.19850711,5735214.68376258,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1892278.68355817,5173351.42088378,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1751861.02534779,5456926.79296647,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1799651.71086005,5176864.99381029,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1864235.33165784,5130010.83409906,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1749629.3000758,5735113.24825087,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kamala,OilField,2024-02-27,1586223.32907037,5961867.06588966,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia 
+Kora ,OilField,2024-02-27,,,,Generated,Karen
