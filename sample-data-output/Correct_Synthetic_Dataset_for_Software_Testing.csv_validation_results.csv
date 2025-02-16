@@ -1,0 +1,11 @@
+id,row_index,file_id,FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName,validation_timestamp,error_message,error_severity
+309,0,11,Kamala,OilField,2024-02-27,1586223.375,5961867.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+310,1,11,Kamala,OilField,2024-02-27,1097212.375,5928627.5,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+311,2,11,Kamala,OilField,2024-02-27,1305724.25,5735214.5,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+312,3,11,Kamala,OilField,2024-02-27,1892278.625,5173351.5,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+313,4,11,Kamala,OilField,2024-02-27,1751861.0,5456927.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+314,5,11,Kamala,OilField,2024-02-27,1799651.75,5176865.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+315,6,11,Kamala,OilField,2024-02-27,1864235.375,5130011.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+316,7,11,Kamala,OilField,2024-02-27,1749629.25,5735113.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+317,8,11,Kamala,OilField,2024-02-27,1586223.375,5961867.0,BoundProjected:EPSG::2193_EPSG::1565,Generated,Manaia ,2025-02-16 07:50:50.592212,,
+318,9,11,Kora ,OilField,2024-02-27,,,,Generated,Karen,2025-02-16 07:50:50.592212,,
