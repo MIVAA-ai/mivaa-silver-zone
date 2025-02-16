@@ -28,7 +28,25 @@ The Silver Zone enhances **data quality** by:
 
 ## Steps to Run the Application Using the Startup Script
 
-### 1. Setup the Environment
+### 1. Configuration Setup
+Before running the application, ensure the following configurations are correctly set:
+
+1. Navigate to osdu-config/ (or move it to config/ if needed).
+2. Edit osdu_client.py to ensure correct API keys and endpoints.
+3. Example:
+```json
+{
+    "base_url": "https://osdu.example.com/api",
+    "headers": {
+        "accept": "application/json",
+        "data-partition-id": "osdu",
+        "Authorization": "Bearer ${OSDU_AUTH_TOKEN}",
+        "Content-Type": "application/json"
+    }
+}
+```
+
+### 2. Setup the Environment
 
 #### For Windows:
 1. Open Command Prompt.
@@ -51,7 +69,7 @@ The Silver Zone enhances **data quality** by:
    ```
    Replace `/path/to/mivaa-silver-directory` with your desired base directory.
 
-### 2. Initialize the Database
+### 3. Initialize the Database
 
 Run the following command in your terminal:
 ```bash
@@ -64,7 +82,7 @@ INFO - Database initialization completed successfully.
 INFO - Starting application...
 ```
 
-### 3. Start the Application Using Docker Compose
+### 4. Start the Application Using Docker Compose
 
 Run the following command to start the application:
 ```bash
