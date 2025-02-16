@@ -100,6 +100,9 @@ Errors are logged in the database with severity levels (`WARNING`, `ERROR`). Det
   Place your CSV files in the directory specified in the `UPLOADS_DIR` path in your `.env` file.
 - **Processed Directory**:
   The validated and processed files will be saved in the directory specified in the `OUTPUT_DIR` path.
+     The utility creates two processed files as follows:
+     1. The first file contains the results of the data processed in bronze zone. File name ends with suffix "csv_validation_results"
+     2. The second file contains the results of the data which has been evaluated for silver zone. File name ends with suffix "csv_silver_data_results".
 - **Error Logs**:
   Detailed error logs are saved in the database and corresponding output folders for review.
 
