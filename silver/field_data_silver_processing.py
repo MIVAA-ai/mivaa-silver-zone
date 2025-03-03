@@ -1,3 +1,4 @@
+import json
 import os
 import pandas as pd
 
@@ -44,6 +45,18 @@ def log_and_save_results(df, file_id, file_name, validation_errors):
         logger.error(f"Error logging and saving results: {e}")
 
 
+def get_geojson(coord_list):
+    coords = [[d["x"], d["y"]] for d in coord_list]
+    return json.dumps({
+        "type": "geometrycollection",
+        "geometries": [
+            {
+                "type": "polygon",
+                "coordinates": [coords]
+            }
+        ]
+    })
+
 def fetch_and_filter_bronze_data(file_id):
     """
     Fetch field data from the bronze table and filter out rows based on severity.
@@ -69,40 +82,67 @@ def fetch_and_filter_bronze_data(file_id):
     return df
 
 
-def get_crs_reference(crs_value, index, validation_errors):
+def get_crs_reference(crs_value: str, row_index: int, validation_errors: list):
     """
-    Retrieve the CRS PersistableReference from the OSDU client.
+    Retrieve the CRS persistable reference from the OSDU client.
 
     Parameters:
     - crs_value (str): The CRS value from the dataset.
-    - index (int): Row index for error tracking.
+    - row_index (int): Row index for error tracking.
     - validation_errors (list): List to store validation errors.
 
     Returns:
-    - str: The PersistableReference for the CRS, or None if not found.
+    - dict | None: A dictionary containing CRS info if found, otherwise None.
     """
+
     if not crs_value:
+        # No CRS value provided, so we have nothing to look up
         return None
 
+    payload = {
+        "kind": PROJECT_CONFIG["MASTER_DATA_KINDS"]["CRS"],
+        "returnedFields": [
+            "kind",
+            "data.PersistableReference",
+            "data.Name",
+            "id"
+        ],
+        "limit": 1,
+        "offset": 0,
+        "query": f'data.ID:"{crs_value}"'
+    }
+
     try:
-        payload = {
-            "kind": PROJECT_CONFIG["MASTER_DATA_KINDS"]["CRS"],
-            "returnedFields": [
-                "data.PersistableReference"
-            ],
-            'limit': 1,
-            'offset': 0,
-            'query': f'data.ID:"{crs_value}"'
+        result = client.search(payload)
+        if not result.get('results'):
+            # No results found
+            validation_errors.append({
+                "row_index": str(row_index),
+                "field_name": "CRS",
+                "error_type": "row_validation",
+                "error_code": "crs_not_found"
+            })
+            return None
+
+        # If we got here, there's at least one matching record
+        record = result['results'][0]
+        data = record['data']
+
+        return {
+            "kind": record["kind"],
+            "name": data["Name"],
+            "persistableReference": data["PersistableReference"],
+            "coordinateReferenceSystemID": record["id"]
         }
 
-        result = client.search(payload)
-        return result['results'][0]['data']['PersistableReference']
     except Exception as e:
+        # Catch and record any unexpected exceptions from the client search
         validation_errors.append({
-            "row_index": str(index),
+            "row_index": str(row_index),
             "field_name": "CRS",
             "error_type": "row_validation",
-            "error_code": "crs_not_found"
+            "error_code": "crs_not_found",
+            "error_message": str(e)
         })
         return None
 
@@ -121,7 +161,7 @@ def convert_coordinates(persistable_reference, coordinates, index, validation_er
     - list: List of converted coordinates, or an empty list if conversion fails.
     """
     if not persistable_reference:
-        return []
+        return None
 
     try:
         return client.crs_converter(persistable_reference, PROJECT_CONFIG["TO_CRS"], coordinates)['points']
@@ -133,7 +173,7 @@ def convert_coordinates(persistable_reference, coordinates, index, validation_er
             "error_type": "row_validation",
             "error_code": "crs_conversion_error"
         })
-        return []
+        return None
 
 def get_search_field_query(field_name):
     """
@@ -251,20 +291,34 @@ def process_single_field(field_name, group, index, file_id, column_list, validat
     ]
 
     crs_value = group["CRS"].iloc[0] if "CRS" in group.columns and pd.notna(group["CRS"].iloc[0]) else None
-    persistable_reference = get_crs_reference(crs_value, index, validation_errors)
-    wgs84_coordinates = convert_coordinates(persistable_reference, coordinates, index, validation_errors)
+    crs_reference = get_crs_reference(crs_value, index, validation_errors)
 
+    wgs84_coordinates = None
+    if crs_reference:
+        wgs84_coordinates = convert_coordinates(crs_reference['persistableReference'], coordinates, index, validation_errors)
+
+    ingested_polygon = None
+    if coordinates:
+        ingested_polygon = get_geojson(coordinates)
+
+    wgs84_polygon = None
+    if wgs84_coordinates:
+        wgs84_polygon = get_geojson(wgs84_coordinates)
+
+        print(json.dumps(get_geojson(wgs84_coordinates), indent=2))
     data_entry = {
         "row_index": str(index),
         "file_id": file_id,
-        "AsIngestedCoordinates": coordinates,
-        "Wgs84Coordinates": wgs84_coordinates
+        "AsIngestedCoordinates": ingested_polygon,
+        "Wgs84Coordinates": wgs84_polygon
     }
 
     data_entry["ParentFieldOSDUId"] = get_parent_field_id(parent_field_name, index, validation_errors)
 
     for column in column_list:
         data_entry[column] = group[column].iloc[0] if column in group.columns else None
+
+    data_entry["CRS"] = json.dumps(crs_reference) if crs_reference else None
 
     return data_entry
 
